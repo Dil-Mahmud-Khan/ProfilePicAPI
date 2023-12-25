@@ -34,6 +34,20 @@ public class ProfileController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateProfilePicture(
+            @PathVariable int id,
+            @RequestParam("file") MultipartFile file) {
+
+        try {
+            profileService.uploadProfilePicture(id, file);
+            return ResponseEntity.ok("Profile picture uploaded successfully");
+        } catch (IOException | IllegalArgumentException | EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> getProfilePicture(@PathVariable int id) {
         try {
@@ -54,25 +68,5 @@ public class ProfileController {
             return ResponseEntity.badRequest().body(null);
         }
     }
-
-//    @GetMapping("/{username}")
-//    public ResponseEntity<Profile> getUserProfileByUsername(@PathVariable String username) {
-//        try {
-//            Profile userProfile = profileService.getUser(username);
-//            return ResponseEntity.ok(userProfile);
-//        } catch (EntityNotFoundException e) {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-//
-//    @GetMapping("/id/{userId}")
-//    public ResponseEntity<UserProfile> getUserProfileById(@PathVariable Long userId) {
-//        try {
-//            UserProfile userProfile = userProfileService.getUserProfileById(userId);
-//            return ResponseEntity.ok(userProfile);
-//        } catch (EntityNotFoundException e) {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 
 }
